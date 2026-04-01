@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tiranga App Hub</title>
+  <style>
+    :root{
+      --bg:#f4f6fb;
+      --card:#ffffff;
+      --text:#1d2433;
+      --muted:#6b7280;
+      --red:#d91515;
+      --red-dark:#a90f0f;
+      --yellow:#ffd84d;
+      --green:#149c52;
+      --border:#e5e7eb;
+      --shadow:0 12px 30px rgba(15, 23, 42, 0.08);
+      --radius:20px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+
+    a{text-decoration:none;color:inherit}
+    img{max-width:100%;display:block}
+    button{font:inherit}
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:1000;
+      background:linear-gradient(180deg,var(--red),var(--red-dark));
+      color:#fff;
+      box-shadow:0 6px 20px rgba(0,0,0,.18);
+    }
+
+    .wrap{
+      width:min(1200px, calc(100% - 24px));
+      margin:auto;
+    }
+
+    .topbar-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding:14px 0;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      min-width:0;
+    }
+
+    .brand-badge{
+      width:58px;
+      height:58px;
+      border-radius:16px;
+      background:linear-gradient(145deg,#168f47,#0f5e31);
+      border:3px solid rgba(255,255,255,.7);
+      color:var(--yellow);
+      font-weight:900;
+      font-size:11px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      line-height:1.05;
+      box-shadow:0 8px 18px rgba(0,0,0,.18);
+      flex:0 0 auto;
+    }
+
+    .brand-text{
+      min-width:0;
+    }
+
+    .brand-text h1{
+      margin:0;
+      font-size:22px;
+      line-height:1.05;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .brand-text p{
+      margin:5px 0 0;
+      font-size:13px;
+      opacity:.92;
+    }
+
+    .top-actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .btn{
+      border:none;
+      border-radius:14px;
+      padding:12px 16px;
+      font-weight:700;
+      cursor:pointer;
+      transition:.2s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+    }
+
+    .btn:hover{
+      transform:translateY(-1px);
+    }
+
+    .btn-light{
+      background:#fff;
+      color:var(--red);
+    }
+
+    .btn-outline{
+      background:transparent;
+      color:#fff;
+      border:2px solid rgba(255,255,255,.55);
+    }
+
+    .hero{
+      padding:18px 0 0;
+    }
+
+    .hero-card{
+      background:
+        radial-gradient(circle at 15% 30%, rgba(255,255,255,.12) 0 8%, transparent 8.2%),
+        radial-gradient(circle at 85% 20%, rgba(255,255,255,.10) 0 7%, transparent 7.2%),
+        linear-gradient(135deg, #f11d1d 0%, #b30d0d 100%);
+      color:#fff;
+      border-radius:28px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+    }
+
+    .hero-inner{
+      display:grid;
+      grid-template-columns:180px 1fr;
+      gap:24px;
+      align-items:center;
+      padding:26px;
+    }
+
+    .hero-logo{
+      width:170px;
+      height:170px;
+      border-radius:28px;
+      margin:auto;
+      background:linear-gradient(145deg,#1a8a44,#0c562a);
+      border:4px solid rgba(255,255,255,.75);
+      color:var(--yellow);
+      font-weight:900;
+      font-size:36px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      line-height:.95;
+      box-shadow:0 12px 28px rgba(0,0,0,.2);
+      padding:10px;
+    }
+
+    .hero-copy h2{
+      margin:0;
+      font-size:54px;
+      line-height:.92;
+      color:var(--yellow);
+      text-shadow:0 5px 12px rgba(0,0,0,.18);
+    }
+
+    .hero-copy p{
+      margin:14px 0 0;
+      font-size:20px;
+      font-weight:700;
+    }
+
+    .hero-copy .sub{
+      margin-top:10px;
+      font-size:16px;
+      color:#fff7cc;
+      word-break:break-word;
+    }
+
+    .hero-links{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:18px;
+    }
+
+    .pill{
+      background:#fff;
+      color:var(--red);
+      border-radius:999px;
+      padding:12px 16px;
+      font-weight:800;
+      box-shadow:0 6px 16px rgba(0,0,0,.12);
+    }
+
+    .main{
+      padding:18px 0 32px;
+    }
+
+    .tabs{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+      margin-bottom:16px;
+    }
+
+    .tab{
+      background:#eceef3;
+      border:1px solid var(--border);
+      padding:15px 12px;
+      border-radius:16px;
+      font-weight:800;
+      text-align:center;
+      cursor:pointer;
+      user-select:none;
+    }
+
+    .tab.active{
+      background:var(--red);
+      color:#fff;
+      position:relative;
+    }
+
+    .tab.active::after{
+      content:"";
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:-10px;
+      width:0;height:0;
+      border-left:10px solid transparent;
+      border-right:10px solid transparent;
+      border-top:12px solid var(--red);
+    }
+
+    .toolbar{
+      display:grid;
+      grid-template-columns:1.2fr .8fr .8fr;
+      gap:12px;
+      margin:18px 0 18px;
+    }
+
+    .field{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:16px;
+      box-shadow:var(--shadow);
+      padding:4px;
+    }
+
+    .field input,
+    .field select{
+      width:100%;
+      border:none;
+      outline:none;
+      background:transparent;
+      padding:14px 14px;
+      font-size:15px;
+      color:var(--text);
+    }
+
+    .notice{
+      background:#fff4d6;
+      border:1px solid #ffd783;
+      color:#7b4b00;
+      border-radius:18px;
+      padding:16px 18px;
+      box-shadow:var(--shadow);
+      margin-bottom:18px;
+      line-height:1.5;
+    }
+
+    .section-head{
+      display:flex;
+      align-items:end;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+      margin:4px 0 14px;
+    }
+
+    .section-head h3{
+      margin:0;
+      font-size:30px;
+    }
+
+    .section-head p{
+      margin:6px 0 0;
+      color:var(--muted);
+    }
+
+    .grid{
+      display:grid;
+      gap:14px;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      padding:16px;
+      display:grid;
+      grid-template-columns:60px 92px 1fr auto;
+      gap:16px;
+      align-items:center;
+    }
+
+    .num{
+      font-size:30px;
+      font-weight:900;
+      color:#444;
+      text-align:center;
+    }
+
+    .icon{
+      width:92px;
+      height:92px;
+      border-radius:24px;
+      background:linear-gradient(145deg,#168744,#0b4e27);
+      border:3px solid #e7f7ea;
+      color:var(--yellow);
+      font-weight:900;
+      font-size:28px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      line-height:1.05;
+      box-shadow:0 8px 18px rgba(0,0,0,.12);
+      padding:8px;
+    }
+
+    .content h4{
+      margin:0 0 8px;
+      font-size:30px;
+      line-height:1;
+    }
+
+    .meta{
+      display:flex;
+      flex-direction:column;
+      gap:7px;
+      font-size:18px;
+      font-weight:700;
+    }
+
+    .bonus{color:var(--red)}
+    .available{color:var(--green)}
+
+    .small{
+      margin-top:8px;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.45;
+    }
+
+    .actions{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      align-items:flex-end;
+    }
+
+    .download-btn{
+      min-width:168px;
+      border:none;
+      border-radius:14px;
+      padding:15px 20px;
+      font-size:18px;
+      font-weight:900;
+      color:#fff;
+      background:linear-gradient(180deg,#ff2828,#bf0d0d);
+      box-shadow:0 10px 20px rgba(191,13,13,.24);
+      cursor:pointer;
+      transition:.2s ease;
+    }
+
+    .download-btn:hover{
+      transform:translateY(-1px);
+      filter:brightness(1.03);
+    }
+
+    .ghost-link{
+      color:var(--red);
+      font-weight:800;
+      font-size:14px;
+    }
+
+    .cta{
+      margin-top:22px;
+      background:linear-gradient(180deg,#15964d,#0e6f39);
+      color:#fff;
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      padding:20px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+
+    .cta h4{
+      margin:0 0 6px;
+      font-size:24px;
+    }
+
+    .cta p{
+      margin:0;
+      opacity:.95;
+    }
+
+    .footer{
+      background:linear-gradient(180deg,var(--red),var(--red-dark));
+      color:#fff;
+      margin-top:12px;
+    }
+
+    .footer-inner{
+      padding:28px 0;
+      display:grid;
+      gap:18px;
+    }
+
+    .footer-links{
+      display:flex;
+      flex-wrap:wrap;
+      gap:16px;
+      justify-content:center;
+      font-weight:700;
+    }
+
+    .footer-links a{
+      text-decoration:underline;
+      text-underline-offset:3px;
+    }
+
+    .footer-box{
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.15);
+      border-radius:20px;
+      padding:20px;
+      line-height:1.7;
+    }
+
+    .footer-box h5{
+      margin:0 0 10px;
+      font-size:24px;
+    }
+
+    .copyright{
+      text-align:center;
+      font-size:14px;
+      opacity:.92;
+    }
+
+    .modal{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.6);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:16px;
+      z-index:2000;
+    }
+
+    .modal.show{
+      display:flex;
+    }
+
+    .modal-card{
+      width:min(680px, 100%);
+      background:#fff;
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:0 18px 50px rgba(0,0,0,.28);
+    }
+
+    .modal-head{
+      background:linear-gradient(180deg,var(--red),var(--red-dark));
+      color:#fff;
+      padding:18px 20px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+
+    .modal-head h3{
+      margin:0;
+      font-size:24px;
+    }
+
+    .close{
+      border:none;
+      border-radius:10px;
+      padding:8px 12px;
+      background:#fff;
+      color:var(--red);
+      font-weight:900;
+      cursor:pointer;
+    }
+
+    .modal-body{
+      padding:20px;
+      line-height:1.65;
+      color:#334155;
+    }
+
+    .modal-body h4{
+      margin:0 0 10px;
+      color:#111827;
+    }
+
+    .modal-actions{
+      padding:0 20px 20px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .hidden{
+      display:none !important;
+    }
+
+    @media (max-width: 980px){
+      .hero-inner{
+        grid-template-columns:1fr;
+        text-align:center;
+      }
+      .hero-copy h2{font-size:44px}
+      .hero-copy p{font-size:18px}
+      .toolbar{
+        grid-template-columns:1fr;
+      }
+      .card{
+        grid-template-columns:1fr;
+        text-align:center;
+      }
+      .actions{
+        align-items:stretch;
+      }
+      .download-btn{
+        width:100%;
+      }
+      .icon{
+        margin:auto;
+      }
+      .num{
+        text-align:center;
+      }
+    }
+
+    @media (max-width: 680px){
+      .topbar-inner{
+        flex-direction:column;
+        align-items:stretch;
+      }
+      .top-actions{
+        justify-content:stretch;
+      }
+      .top-actions .btn{
+        flex:1;
+      }
+      .brand-text h1{
+        white-space:normal;
+      }
+      .hero-logo{
+        width:140px;
+        height:140px;
+        font-size:30px;
+      }
+      .hero-copy h2{
+        font-size:36px;
+      }
+      .tabs{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <div class="brand">
+        <div class="brand-badge">TIRANGA<br>HUB</div>
+        <div class="brand-text">
+          <h1>Tiranga App Hub</h1>
+          <p>Professional app showcase website for Chrome</p>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <a class="btn btn-outline" href="https://t.me/tirangahacktrack" target="_blank" rel="noopener noreferrer">Telegram Help</a>
+        <a class="btn btn-light" href="#terms">Terms & Conditions</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-card">
+        <div class="hero-inner">
+          <div class="hero-logo">APP<br>HUB</div>
+
+          <div class="hero-copy">
+            <h2>ALL PRO APPS</h2>
+            <p>Clean cards, search, categories, and support link</p>
+            <div class="sub">Telegram support link: https://t.me/tirangahacktrack</div>
+
+            <div class="hero-links">
+              <a class="pill" href="#apps">Browse Apps</a>
+              <a class="pill" href="https://t.me/tirangahacktrack" target="_blank" rel="noopener noreferrer">Join Telegram</a>
+              <a class="pill" href="#terms">Read Terms</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="main">
+    <div class="wrap">
+      <div class="tabs" id="tabs">
+        <div class="tab active" data-tab="all">All Apps</div>
+        <div class="tab" data-tab="featured">Featured</div>
+        <div class="tab" data-tab="new">New Apps</div>
+      </div>
+
+      <div class="toolbar">
+        <div class="field">
+          <input type="text" id="searchInput" placeholder="Search app name..." />
+        </div>
+
+        <div class="field">
+          <select id="sortSelect">
+            <option value="default">Sort: Default</option>
+            <option value="name-asc">Name: A to Z</option>
+            <option value="name-desc">Name: Z to A</option>
+            <option value="bonus-high">Bonus: High to Low</option>
+            <option value="bonus-low">Bonus: Low to High</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <select id="statusSelect">
+            <option value="all">Status: All</option>
+            <option value="featured">Featured only</option>
+            <option value="new">New only</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="notice">
+        <strong>Notice:</strong> Ye site template ek demo-style app directory hai. Isme wallet, deposit, withdrawal, betting, ya payment gateway nahi hai. Isko showcase, listing, help-center, ya app-info website ke liye use karo.
+      </div>
+
+      <div class="section-head" id="apps">
+        <div>
+          <h3>Featured App List</h3>
+          <p>Search karo, sort karo, aur Telegram help popup ke saath open karo.</p>
+        </div>
+      </div>
+
+      <section class="grid" id="appGrid"></section>
+
+      <section class="cta">
+        <div>
+          <h4>Need support?</h4>
+          <p>User help aur support ke liye Telegram link ready hai.</p>
+        </div>
+        <a class="btn btn-light" href="https://t.me/tirangahacktrack" target="_blank" rel="noopener noreferrer">Open Telegram Help</a>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div class="footer-links">
+        <a href="#apps">Apps</a>
+        <a href="#terms">Terms & Conditions</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Contact</a>
+        <a href="https://t.me/tirangahacktrack" target="_blank" rel="noopener noreferrer">Telegram Help</a>
+      </div>
+
+      <div class="footer-box" id="terms">
+        <h5>Terms & Conditions</h5>
+        <div>
+          1. This website is a demo-style showcase and listing template.<br><br>
+          2. All app names, icons, labels, and bonus text shown here are sample content unless replaced by the site owner.<br><br>
+          3. This template does not include deposit, withdrawal, wallet, or payment functionality.<br><br>
+          4. Users should verify any third-party link or external service before using it.<br><br>
+          5. Telegram help is provided for user contact/support only: <strong>https://t.me/tirangahacktrack</strong><br><br>
+          6. By using this site, users agree that they are responsible for their own actions on external links.<br><br>
+          7. The site owner may edit, update, or remove listed apps and content at any time.
+        </div>
+      </div>
+
+      <div class="copyright">
+        © 2026 Tiranga App Hub. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <div class="modal" id="helpModal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="modalTitle">App Help</h3>
+        <button class="close" id="closeModalBtn">X</button>
+      </div>
+
+      <div class="modal-body">
+        <h4 id="modalAppName">Selected App</h4>
+        <p>
+          Is app ke liye help, support, ya info ke liye Telegram help link use karo.
+          Baad me tum is popup me apna custom page, installation guide, ya external download/info link bhi laga sakte ho.
+        </p>
+      </div>
+
+      <div class="modal-actions">
+        <a class="btn btn-light" href="https://t.me/tirangahacktrack" target="_blank" rel="noopener noreferrer">Open Telegram Help</a>
+        <button class="btn" style="background:#eef2f7;color:#111827;" id="closeModalBtn2">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const apps = [
+      { id: 1, name: "OK Rummy", icon: "OK", bonus: 150, desc: "Clean professional card layout with support popup and fast access.", featured: true, isNew: false },
+      { id: 2, name: "Spin 777", icon: "777", bonus: 90, desc: "Bold download button and clean list style for showcase pages.", featured: true, isNew: true },
+      { id: 3, name: "Rumble Rummy", icon: "RM", bonus: 51, desc: "Responsive UI that works nicely in desktop and mobile Chrome.", featured: false, isNew: true },
+      { id: 4, name: "Game Rummy", icon: "GR", bonus: 60, desc: "Search and sorting ready card block with polished spacing.", featured: false, isNew: false },
+      { id: 5, name: "Jaiho 777", icon: "JH", bonus: 100, desc: "Telegram help integration and pro-looking button structure.", featured: true, isNew: false },
+      { id: 6, name: "Lucky Ace", icon: "LA", bonus: 75, desc: "Simple to edit and easy to expand with more cards later.", featured: false, isNew: true }
+    ];
+
+    const appGrid = document.getElementById("appGrid");
+    const searchInput = document.getElementById("searchInput");
+    const sortSelect = document.getElementById("sortSelect");
+    const statusSelect = document.getElementById("statusSelect");
+    const tabs = document.querySelectorAll(".tab");
+    const helpModal = document.getElementById("helpModal");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalAppName = document.getElementById("modalAppName");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+    const closeModalBtn2 = document.getElementById("closeModalBtn2");
+
+    let currentTab = "all";
+
+    function getFilteredApps() {
+      let filtered = [...apps];
+      const search = searchInput.value.trim().toLowerCase();
+      const status = statusSelect.value;
+      const sort = sortSelect.value;
+
+      if (currentTab === "featured") {
+        filtered = filtered.filter(app => app.featured);
+      } else if (currentTab === "new") {
+        filtered = filtered.filter(app => app.isNew);
+      }
+
+      if (status === "featured") {
+        filtered = filtered.filter(app => app.featured);
+      } else if (status === "new") {
+        filtered = filtered.filter(app => app.isNew);
+      }
+
+      if (search) {
+        filtered = filtered.filter(app => app.name.toLowerCase().includes(search));
+      }
+
+      if (sort === "name-asc") {
+        filtered.sort((a, b) => a.name.localeCompare(b.name));
+      } else if (sort === "name-desc") {
+        filtered.sort((a, b) => b.name.localeCompare(a.name));
+      } else if (sort === "bonus-high") {
+        filtered.sort((a, b) => b.bonus - a.bonus);
+      } else if (sort === "bonus-low") {
+        filtered.sort((a, b) => a.bonus - b.bonus);
+      }
+
+      return filtered;
+    }
+
+    function renderApps() {
+      const filtered = getFilteredApps();
+
+      if (!filtered.length) {
+        appGrid.innerHTML = `
+          <div class="card" style="grid-template-columns:1fr;text-align:center;">
+            <div class="content">
+              <h4 style="margin-bottom:10px;">No apps found</h4>
+              <div class="small">Search ya filter change karke dekho.</div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      appGrid.innerHTML = filtered.map((app, index) => {
+        const badge = app.featured ? "Featured" : app.isNew ? "New App" : "Available";
+        return `
+          <article class="card">
+            <div class="num">${String(index + 1).padStart(2, "0")}</div>
+            <div class="icon">${app.icon}</div>
+
+            <div class="content">
+              <h4>${app.name}</h4>
+              <div class="meta">
+                <div class="bonus">🎁 Welcome Bonus: ₹${app.bonus}</div>
+                <div class="available">✅ ${badge}</div>
+              </div>
+              <div class="small">${app.desc}</div>
+            </div>
+
+            <div class="actions">
+              <button class="download-btn" onclick="openHelp('${app.name.replace(/'/g, "\\'")}')">Download</button>
+              <a class="ghost-link" href="https://t.me/tirangahacktrack" target="_blank" rel="noopener noreferrer">Need Help?</a>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function openHelp(appName) {
+      modalTitle.textContent = appName + " Help";
+      modalAppName.textContent = appName;
+      helpModal.classList.add("show");
+    }
+
+    function closeHelp() {
+      helpModal.classList.remove("show");
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        tabs.forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+        currentTab = tab.dataset.tab;
+        renderApps();
+      });
+    });
+
+    searchInput.addEventListener("input", renderApps);
+    sortSelect.addEventListener("change", renderApps);
+    statusSelect.addEventListener("change", renderApps);
+    closeModalBtn.addEventListener("click", closeHelp);
+    closeModalBtn2.addEventListener("click", closeHelp);
+
+    helpModal.addEventListener("click", (e) => {
+      if (e.target === helpModal) closeHelp();
+    });
+
+    renderApps();
+    window.openHelp = openHelp;
+  </script>
+</body>
+</html>
